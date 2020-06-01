@@ -1,21 +1,24 @@
-Index: ola-0.10.6/configure.ac
-===================================================================
---- ola-0.10.6.orig/configure.ac
-+++ ola-0.10.6/configure.ac
-@@ -72,8 +72,6 @@ AM_CONDITIONAL([SUPPORTS_GNU_PLUS_PLUS_1
- require_gnu_plus_plus_11="no"
- AS_IF([test "x$ac_cv_gnu_plus_plus_11" = xyes],
-       [AS_IF([test "x$ac_cv_gnu_plus_plus_98" = xyes],
+--- a/configure.ac	2018-07-14 00:57:50.000000000 +0200
++++ b/configure.ac	2020-05-27 14:55:35.222437248 +0200
+@@ -69,20 +69,7 @@
+ #   If no unit tests, force to gnu++98
+ #   If unittests and cppunit < 1.14.0, force to gnu++98
+ #   Else turn off deprecation messages for std::auto_ptr and run gnu++11
+-require_gnu_plus_plus_11="no"
+-AS_IF([test "x$ac_cv_gnu_plus_plus_11" = xyes],
+-      [AS_IF([test "x$ac_cv_gnu_plus_plus_98" = xyes],
 -             [AS_IF([test "x$enable_unittests" = xno],
 -                    [CXXFLAGS="$CXXFLAGS -std=gnu++98"],
-                     [PKG_CHECK_MODULES([CPPUNIT1], [cppunit < 1.14.0],
-                                        [CXXFLAGS="$CXXFLAGS -std=gnu++98"],
-                                        [PKG_CHECK_MODULES([CPPUNIT2], [cppunit >= 1.14.0],
-@@ -81,7 +79,6 @@ AS_IF([test "x$ac_cv_gnu_plus_plus_11" =
-                                                           [AC_MSG_WARN([OLA requires std::auto_ptr support.])])
-                                        ])
-                     ])
+-                    [PKG_CHECK_MODULES([CPPUNIT1], [cppunit < 1.14.0],
+-                                       [CXXFLAGS="$CXXFLAGS -std=gnu++98"],
+-                                       [PKG_CHECK_MODULES([CPPUNIT2], [cppunit >= 1.14.0],
+-                                                          [require_gnu_plus_plus_11="yes"],
+-                                                          [AC_MSG_WARN([OLA requires std::auto_ptr support.])])
+-                                       ])
+-                    ])
 -             ])
-       ])
+-      ])
++require_gnu_plus_plus_11="yes"
  AS_IF([test "x$require_gnu_plus_plus_11" = xyes],
        [CXXFLAGS="$CXXFLAGS -std=gnu++11"])
+ AM_CONDITIONAL([GNU_PLUS_PLUS_11_DEPRECATIONS], [test "x$require_gnu_plus_plus_11" = xyes])
